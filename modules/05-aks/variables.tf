@@ -5,7 +5,7 @@ variable "prefix" {
 
 variable "resource_group_name" {
   description = "resource group name"
-  default     = "aks"
+  default     = "aks-terraform"
 }
 
 variable "location" {
@@ -15,5 +15,5 @@ variable "location" {
 
 variable "k8s_version" {
   description = "kubernetes version"
-  default     = "1.25.6"
+  default     = "1.26.6"
 }

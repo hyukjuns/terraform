@@ -6,10 +6,10 @@ terraform {
     }
   }
   backend "azurerm" {
-        resource_group_name  = "rg-backend"
-        storage_account_name = "tfbetestsac001"
-        container_name       = "backend"
-        key                  = "dev-002.cluster.tfstate"
+        resource_group_name  = "rg-dev"
+        storage_account_name = "hyukjundevsac"
+        container_name       = "tfstate"
+        key                  = "aks.tfstate"
     }
 }
 
@@ -23,7 +23,7 @@ resource "azurerm_resource_group" "aks" {
 }
 
 resource "azurerm_virtual_network" "aks" {
-  name                = "${var.prefix}-aks-vnet-002"
+  name                = "${var.prefix}-aks-vnet-001"
   location            = azurerm_resource_group.aks.location
   resource_group_name = azurerm_resource_group.aks.name
   address_space       = ["10.100.0.0/16"]
@@ -37,7 +37,7 @@ resource "azurerm_subnet" "aks" {
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "${var.prefix}-aks-cluster-002"
+  name                = "${var.prefix}-aks-cluster-001"
   location            = azurerm_resource_group.aks.location
   resource_group_name = azurerm_resource_group.aks.name
 
