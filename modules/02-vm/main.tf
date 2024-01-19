@@ -7,7 +7,7 @@ locals {
 
 # compact로 list 값 중 null 제거, list를 set으로 자료형 변환
 resource "azurerm_public_ip" "vm" {
-  for_each            = toset(compact(local.public_ip_enabled))
+  for_each            = toset(local.public_ip_enabled)
   name                = "${each.key}-pip"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
@@ -20,6 +20,7 @@ resource "azurerm_network_interface" "vm" {
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
 
+  # public ip는 azurerm_public_ip의 이름(가상머신 이름과 동일)과 맞는것만 생성
   ip_configuration {
     name                          = "internal"
     subnet_id                     = each.value.subnet_id
@@ -59,10 +60,11 @@ resource "azurerm_linux_virtual_machine" "vm" {
     azurerm_network_interface.vm[each.value.name].id
   ]
 
+  # Linux OS Disk 사이즈의 최소값은 30 GB
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
-    disk_size_gb         = each.value.os_disk_size_gb
+    disk_size_gb         = tonumber(each.value.os_disk_size_gb) < 30 ? "30" : each.value.os_disk_size_gb
   }
 
   source_image_reference {
@@ -91,10 +93,11 @@ resource "azurerm_windows_virtual_machine" "vm" {
     azurerm_network_interface.vm[each.value.name].id
   ]
 
+  # Windows OS Disk 사이즈의 최소값은 127 GB
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
-    disk_size_gb         = each.value.os_disk_size_gb
+    disk_size_gb         = tonumber(each.value.os_disk_size_gb) < 127 ? "127" : each.value.os_disk_size_gb
   }
 
   source_image_reference {

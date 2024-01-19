@@ -17,3 +17,7 @@
 3. route table
 4. subnet delegation
 5. service endpoint
+
+### 특이사항
+- For 문 문법 통일
+- NSG 분리

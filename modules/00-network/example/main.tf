@@ -35,36 +35,4 @@ module "network" {
       }
     ]
   }
-  nsg = {
-    name                   = "dmz-sn-nsg"
-    attach_to_subnet_names = ["dmz-sn"]
-    rules = [
-      {
-        name                       = "ssh"
-        priority                   = 100
-        direction                  = "Inbound"
-        access                     = "Allow"
-        protocol                   = "Tcp"
-        source_address_prefix      = "*"
-        source_port_range          = "*"
-        destination_address_prefix = "*"
-        destination_port_ranges    = [22]
-      },
-      {
-        name                       = "http"
-        priority                   = 110
-        direction                  = "Inbound"
-        access                     = "Allow"
-        protocol                   = "Tcp"
-        source_address_prefix      = "*"
-        source_port_range          = "*"
-        destination_address_prefix = "*"
-        destination_port_ranges    = [80, 443]
-      }
-    ]
-  }
-}
-
-output "subnet_id" {
-  value = module.network.subnet_ids
 }

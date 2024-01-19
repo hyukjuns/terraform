@@ -6,10 +6,6 @@ terraform {
     }
   }
   backend "azurerm" {
-        resource_group_name  = "rg-dev"
-        storage_account_name = "hyukjundevsac"
-        container_name       = "tfstate"
-        key                  = "aks.tfstate"
     }
 }
 

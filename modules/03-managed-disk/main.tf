@@ -1,5 +1,5 @@
 resource "random_id" "vm" {
-  for_each = { for index, value in var.data_disks : index => value }
+  for_each = { for value in var.data_disks : value.name => value }
   keepers = {
     id = each.value.name
   }
@@ -7,7 +7,7 @@ resource "random_id" "vm" {
 }
 
 resource "azurerm_managed_disk" "vm" {
-  for_each             = { for index, value in var.data_disks : index => value }
+  for_each             = { for value in var.data_disks : value.name => value }
   name                 = "data-disk-${each.value.name}${random_id.vm[each.key].hex}"
   location             = var.resource_group_location
   resource_group_name  = var.resource_group_name
@@ -17,7 +17,7 @@ resource "azurerm_managed_disk" "vm" {
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "vm" {
-  for_each           = { for index, value in var.data_disks : index => value }
+  for_each           = { for value in var.data_disks : value.name => value }
   managed_disk_id    = azurerm_managed_disk.vm[each.key].id
   virtual_machine_id = each.value.vm_id
   lun                = each.value.lun
