@@ -9,32 +9,33 @@ variable "resource_group_location" {
 }
 
 variable "nsg" {
-  type = list(object(
-      {
-        name                   = string
-        attach_to_subnet_names = optional(list(string))
-        attach_to_nic_ids      = optional(list(string))
-        rules = list(object(
-          {
-            name                       = string
-            priority                   = string
-            direction                  = string
-            access                     = string
-            protocol                   = string
-            source_address_prefix      = string
-            source_port_range          = string
-            destination_address_prefix = string
-            destination_port_ranges    = list(string)
-          }
-        ))
-      }
-    )
+  type = object(
+    {
+      name = string
+      rules = set(object(
+        {
+          name                       = string
+          priority                   = string
+          direction                  = string
+          access                     = string
+          protocol                   = string
+          source_address_prefix      = string
+          source_port_range          = string
+          destination_address_prefix = string
+          destination_port_ranges    = list(string)
+        }
+        )
+      )
+    }
   )
   description = "nsg name, rules"
 }
 
-variable "nic_ids" {
-  type        = list(string)
-  description = "nic id list, use for nsg associate, default = black list"
-  default     = []
+variable "attach_nsg_subnet_ids" {
+  type = list(string)
+  default = []
+}
+variable "attach_nsg_nic_ids" {
+  type = list(string)
+  default = []
 }

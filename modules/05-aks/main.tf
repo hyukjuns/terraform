@@ -5,8 +5,7 @@ terraform {
       version = "~> 3.0"
     }
   }
-  backend "azurerm" {
-    }
+  backend "azurerm" {}
 }
 
 provider "azurerm" {
@@ -58,13 +57,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   # Network
   network_profile {
-    network_plugin     = "azure"
-    network_mode       = "transparent"
-    network_policy     = "calico"
-    service_cidr       = "10.0.0.0/16"
-    dns_service_ip     = "10.0.0.10"
-    outbound_type      = "loadBalancer"
-    load_balancer_sku  = "standard"
+    network_plugin    = "azure"
+    network_mode      = "transparent"
+    network_policy    = "calico"
+    service_cidr      = "10.0.0.0/16"
+    dns_service_ip    = "10.0.0.10"
+    outbound_type     = "loadBalancer"
+    load_balancer_sku = "standard"
   }
 
   # Identity

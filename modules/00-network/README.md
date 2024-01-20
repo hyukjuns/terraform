@@ -19,41 +19,12 @@ No modules.
 
 The following resources are used by this module:
 
-- [azurerm_network_interface_security_group_association.network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface_security_group_association) (resource)
-- [azurerm_network_security_group.network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) (resource)
-- [azurerm_network_security_rule.network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) (resource)
 - [azurerm_subnet.network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) (resource)
-- [azurerm_subnet_network_security_group_association.network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) (resource)
 - [azurerm_virtual_network.network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) (resource)
 
 ## Required Inputs
 
 The following input variables are required:
-
-### <a name="input_nsg"></a> [nsg](#input\_nsg)
-
-Description: nsg name, rules
-
-Type:
-
-```hcl
-object({
-    name = string
-    rules = list(object(
-      {
-        name = string
-        priority = string
-        direction = string
-        access = string
-        protocol = string
-        source_address_prefix = string
-        source_port_range = string
-        destination_address_prefix = string
-        destination_port_ranges = list(string)
-      }
-    ))
-  })
-```
 
 ### <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location)
 
@@ -90,39 +61,11 @@ object(
 
 ## Optional Inputs
 
-The following input variables are optional (have default values):
-
-### <a name="input_nic_ids"></a> [nic\_ids](#input\_nic\_ids)
-
-Description: nic id list, use for nsg associate, default = black list
-
-Type: `list(string)`
-
-Default: `[]`
-
-### <a name="input_nsg_associate_subnet"></a> [nsg\_associate\_subnet](#input\_nsg\_associate\_subnet)
-
-Description: associate nsg to subnet, default = true
-
-Type: `bool`
-
-Default: `true`
-
-### <a name="input_nsg_association_nic"></a> [nsg\_association\_nic](#input\_nsg\_association\_nic)
-
-Description: associatte nsg to nic, default = false
-
-Type: `bool`
-
-Default: `false`
+No optional inputs.
 
 ## Outputs
 
 The following outputs are exported:
-
-### <a name="output_nsg_id"></a> [nsg\_id](#output\_nsg\_id)
-
-Description: nsg id
 
 ### <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids)
 

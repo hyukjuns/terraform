@@ -1,4 +1,4 @@
 output "nsg_id" {
-  value       = azurerm_network_security_group.network.id
+  value       = azurerm_network_security_group.nsg.id
   description = "nsg id"
 }

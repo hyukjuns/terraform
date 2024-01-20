@@ -1,3 +1,4 @@
+# 공인 IP를 함께 생성하는 가상머신 이름 목록 생성
 locals {
   public_ip_enabled = [
     for value in var.virtual_machines : value.name
@@ -6,6 +7,7 @@ locals {
 }
 
 # compact로 list 값 중 null 제거, list를 set으로 자료형 변환
+# 가상머신 이름으로 공인 아이피 리소스 참조 가능
 resource "azurerm_public_ip" "vm" {
   for_each            = toset(local.public_ip_enabled)
   name                = "${each.key}-pip"
@@ -20,16 +22,16 @@ resource "azurerm_network_interface" "vm" {
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
 
-  # public ip는 azurerm_public_ip의 이름(가상머신 이름과 동일)과 맞는것만 생성
+  # 공인 IP 리소스는 가상머신 이름으로 참조
   ip_configuration {
     name                          = "internal"
     subnet_id                     = each.value.subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.vm["${each.value.name}"].id
+    public_ip_address_id          = azurerm_public_ip.vm["${each.key}"].id
   }
 }
 
-# Filter by OS
+# 가상머신을 OS 이미지 별로 구분 (리눅스/윈도우)
 locals {
   linux_machines = {
     for value in var.virtual_machines : value.name => value
@@ -42,7 +44,7 @@ locals {
 }
 
 /* 
-  Create Linux Server
+  리눅스 서버 생성
 */
 resource "azurerm_linux_virtual_machine" "vm" {
   for_each                        = { for value in local.linux_machines : value.name => value }
@@ -76,7 +78,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 }
 
 /* 
-  Create Windows Server
+  윈도우 서버 생성
 */
 resource "azurerm_windows_virtual_machine" "vm" {
   for_each            = { for value in local.windows_machines : value.name => value }

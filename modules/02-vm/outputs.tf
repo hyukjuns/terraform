@@ -1,18 +1,18 @@
 output "id_list" {
   value = [
-    for value in azurerm_linux_virtual_machine.vm: value.id
+    for value in azurerm_linux_virtual_machine.vm : value.id
   ]
 }
 
 output "identity_list" {
   value = [
-    for value in azurerm_linux_virtual_machine.vm: value.identity
+    for value in azurerm_linux_virtual_machine.vm : value.identity
   ]
 }
 
 output "private_ip_address_list" {
   value = [
-    for value in azurerm_linux_virtual_machine.vm: value.private_ip_address
+    for value in azurerm_linux_virtual_machine.vm : value.private_ip_address
   ]
 }
 output "public_ip_address_list" {

@@ -9,7 +9,7 @@ The following requirements are needed by this module:
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.86.0)
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) ( ~> 3.0)
 
 ## Modules
 
@@ -22,6 +22,7 @@ The following resources are used by this module:
 - [azurerm_linux_virtual_machine.vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine) (resource)
 - [azurerm_network_interface.vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface) (resource)
 - [azurerm_public_ip.vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) (resource)
+- [azurerm_windows_virtual_machine.vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/windows_virtual_machine) (resource)
 
 ## Required Inputs
 
@@ -55,9 +56,9 @@ list(object(
       os_image            = string
       os_disk_size_gb     = string
       subnet_id           = string
-      create_puplic_ip    = bool
-      backup              = optional(bool)
+      create_public_ip    = bool
       availability_set_id = optional(string)
+      av_zone             = optional(string)
     }
   ))
 ```
@@ -91,7 +92,7 @@ Default:
   "windows_server_2019": {
     "offer": "WindowsServer",
     "publisher": "MicrosoftWindowsServer",
-    "sku": "2019-datacenter-gensecond",
+    "sku": "2019-datacenter",
     "version": "latest"
   },
   "windows_server_2022": {
@@ -107,7 +108,23 @@ Default:
 
 The following outputs are exported:
 
-### <a name="output_vm_public_ip_address"></a> [vm\_public\_ip\_address](#output\_vm\_public\_ip\_address)
+### <a name="output_id_list"></a> [id\_list](#output\_id\_list)
+
+Description: n/a
+
+### <a name="output_identity_list"></a> [identity\_list](#output\_identity\_list)
+
+Description: n/a
+
+### <a name="output_private_ip_address_list"></a> [private\_ip\_address\_list](#output\_private\_ip\_address\_list)
+
+Description: n/a
+
+### <a name="output_public_ip_address_list"></a> [public\_ip\_address\_list](#output\_public\_ip\_address\_list)
+
+Description: n/a
+
+### <a name="output_virtual_machine_id_list"></a> [virtual\_machine\_id\_list](#output\_virtual\_machine\_id\_list)
 
 Description: n/a
 <!-- END_TF_DOCS -->
