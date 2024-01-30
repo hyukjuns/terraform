@@ -64,7 +64,7 @@ resource "azurerm_role_assignment" "aks" {
 # Assign Role AKS Identity to VNET
 resource "azurerm_role_assignment" "aks_rg" {
   principal_id                     = azurerm_kubernetes_cluster.aks.identity[0].principal_id
-  role_definition_name             = "Contributor"
+  role_definition_name             = "Network Contributor"
   scope                            = var.identity_role_scope
   skip_service_principal_aad_check = true
 }
