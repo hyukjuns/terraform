@@ -20,7 +20,7 @@ module "nsg" {
   source                  = "../"
   resource_group_name     = azurerm_resource_group.example.name
   resource_group_location = azurerm_resource_group.example.location
-  attach_nsg_subnet_ids = var.my_subnet_ids
+  # attach_nsg_subnet_ids = var.my_subnet_ids
   nsg = {
     name = "test-nsg-terraform"
     rules = [
