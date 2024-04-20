@@ -1,10 +1,5 @@
 ### Terraform Module and Terraform Cloud with Azurerm
 
-### Todo
-- NSG 모듈 완성
-- for / for_each 문 표준화
-- 전체 모듈 컨벤션 통일
-
 ### Azurerm Module
 - Network
 - Compute
