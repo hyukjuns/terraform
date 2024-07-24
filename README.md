@@ -5,6 +5,15 @@
 - Compute
 - Database
 
+### TFC Azurerm Module (Archive)
+#### module repo naming convention
+```terraform-<PROVIDER>-<MODULENAME>```
+- Network: https://github.com/hyukjuns/terraform-azurerm-network
+- NSG: https://github.com/hyukjuns/terraform-azurerm-nsg
+- Public ip: https://github.com/hyukjuns/terraform-azurerm-pip
+- Linux VM: https://github.com/hyukjuns/terraform-azurerm-linux
+
+
 ### Terraform Cloud 
 - [Terraform Cloud Usage](https://github.com/hyukjuns/terraform-cloud-usage)
 
