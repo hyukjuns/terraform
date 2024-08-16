@@ -12,7 +12,7 @@ provider "azurerm" {
 }
 
 data "azurerm_resource_group" "vm" {
-  name = "rg-dev-terraform"
+  name = var.rg_name
 }
 
 resource "azurerm_availability_set" "vm" {
@@ -28,7 +28,7 @@ module "vm" {
   resource_group_location = data.azurerm_resource_group.vm.location
   virtual_machines = [
     {
-      name                = "testvm"
+      name                = "testvm-01"
       size                = "Standard_F2"
       admin_username      = var.my_admin_username
       admin_password      = var.my_admin_password
@@ -39,12 +39,12 @@ module "vm" {
       create_public_ip    = true
     },
     {
-      name                = "testvm-windows"
+      name                = "testvm-02"
       size                = "Standard_F2"
       admin_username      = var.my_admin_username
       admin_password      = var.my_admin_password
-      os_image            = "windows_server_2019"
-      os_disk_size_gb     = "127"
+      os_image            = "ubuntu"
+      os_disk_size_gb     = "30"
       subnet_id           = var.my_subnet_id
       availability_set_id = azurerm_availability_set.vm.id
       create_public_ip    = true

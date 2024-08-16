@@ -11,3 +11,7 @@ variable "my_subnet_id" {
   type        = string
   description = "서브넷 아이디"
 }
+variable "rg_name" {
+  type = string
+  description = "리소스 그룹 이름"
+}
