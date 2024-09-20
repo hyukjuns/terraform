@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = " ~> 3.0"
+      version = " ~> 4.0"
     }
   }
 }
@@ -16,8 +16,9 @@ resource "azurerm_resource_group" "test" {
   location = "koreacentral"
 }
 
+# Network
 module "network" {
-  source                  = "../../modules/00-network"
+  source                  = "../../modules/001-network"
   resource_group_name     = azurerm_resource_group.test.name
   resource_group_location = azurerm_resource_group.test.location
 
@@ -26,25 +27,25 @@ module "network" {
       vnet_address_space = ["10.0.0.0/16"]
       subnets = [
           {
-            name = "dmz-sn"
+            name = "sn-01"
             address_prefixes = ["10.0.100.0/24"]
           },
           {
-            name = "backend-sn"
+            name = "sn-02"
             address_prefixes = ["10.0.200.0/24"]
           }
         ] 
     }
 }
-module "nsg_dmz" {
-  source = "../../modules/01-nsg"
+module "nsg_01" {
+  source = "../../modules/002-nsg"
   resource_group_name     = azurerm_resource_group.test.name
   resource_group_location = azurerm_resource_group.test.location
   attach_nsg_subnet_ids = [
-    module.network.subnet_ids["dmz-sn"] 
+    module.network.subnet_ids["sn-01"] 
   ]
   nsg = {
-    name = "dmz-sn-nsg"
+    name = "sn-01-nsg"
     rules = [
         {
         name                       = "http"
@@ -71,15 +72,15 @@ module "nsg_dmz" {
     ]
   }
 }
-module "nsg_backend" {
-  source = "../../modules/01-nsg"
+module "nsg_02" {
+  source = "../../modules/002-nsg"
   resource_group_name     = azurerm_resource_group.test.name
   resource_group_location = azurerm_resource_group.test.location
   attach_nsg_subnet_ids = [ 
-    module.network.subnet_ids["backend-sn"]
+    module.network.subnet_ids["sn-02"]
   ]
   nsg = {
-    name = "backend-sn-nsg"
+    name = "sn-02-nsg"
     rules = [
         {
         name                       = "ssh"
@@ -102,11 +103,23 @@ module "nsg_backend" {
         source_port_range          = "*"
         destination_address_prefix = "*"
         destination_port_ranges    = [3306]
+      },
+      {
+        name                       = "rdp"
+        priority                   = 120
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_address_prefix      = "10.0.100.0/24"
+        source_port_range          = "*"
+        destination_address_prefix = "*"
+        destination_port_ranges    = [3389]
       }
     ]
   }
 }
 
+# VM
 resource "azurerm_availability_set" "test" {
   name                        = "dev-avset-terraform"
   location                    = azurerm_resource_group.test.location
@@ -115,29 +128,29 @@ resource "azurerm_availability_set" "test" {
 }
 
 module "vm" {
-  source                  = "../../modules/02-vm"
+  source                  = "../../modules/004-virtualmachine"
   resource_group_name     = azurerm_resource_group.test.name
   resource_group_location = azurerm_resource_group.test.location
   virtual_machines = [
     {
-      name                = "testvm-linux"
+      name                = "tftest-linux-vm-001"
       size                = "Standard_F2"
       admin_username      = var.my_admin_username
       admin_password      = var.my_admin_password
       os_image            = "ubuntu"
       os_disk_size_gb     = "30"
-      subnet_id           = module.network.subnet_ids["dmz-sn"]
+      subnet_id           = module.network.subnet_ids["sn-01"]
       availability_set_id = azurerm_availability_set.test.id
       create_public_ip    = true
     },
     {
-      name                = "testvm-windows"
+      name                = "tftest-win-001" # 윈도우 머신 컴퓨터이름 15자 제한
       size                = "Standard_F2"
       admin_username      = var.my_admin_username
       admin_password      = var.my_admin_password
       os_image            = "windows_server_2019"
       os_disk_size_gb     = "127"
-      subnet_id           = module.network.subnet_ids["backend-sn"]
+      subnet_id           = module.network.subnet_ids["sn-02"]
       create_public_ip    = true
     }
   ]

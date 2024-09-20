@@ -1,24 +1,50 @@
 ### Terraform Module and Terraform Cloud with Azurerm
 
-### TFC Azurerm Module
+### Todo list
+- 간단한 테스트 용도 vm,network,lb 배포 모듈 개발
+- vm,db,appservice,aks,network 모듈 개발, 고도화
 
-- Network: https://github.com/hyukjuns/terraform-azurerm-network
-- NSG: https://github.com/hyukjuns/terraform-azurerm-nsg
-- Public ip: https://github.com/hyukjuns/terraform-azurerm-pip
-- Linux VM: https://github.com/hyukjuns/terraform-azurerm-linux
+### TFC Azurerm Module (Archive)
 
+- [terraform-azurerm-network](https://registry.terraform.io/modules/hyukjuns/network/azurerm/latest)
+- [terraform-azurerm-nsg](https://registry.terraform.io/modules/hyukjuns/nsg/azurerm/latest)
+- [terraform-azurerm-pip](https://registry.terraform.io/modules/hyukjuns/public-ip/azurerm/latest)
+- [terraform-azurerm-linux](https://registry.terraform.io/modules/hyukjuns/linux/azurerm/latest)
 
-### Terraform Cloud
+### Terraform Cloud (Archive)
 - [Terraform Cloud Usage](https://github.com/hyukjuns/terraform-cloud-usage)
 
 ### Cheatseets
+
 ```markdown
+# tfstate backends - azurerm (blob)
+
+  terraform {
+    required_providers {
+          azurerm = {
+          source  = "hashicorp/azurerm"
+          version = "~> 4.0"
+        }
+    }
+    backend "azurerm" {
+            resource_group_name  = "RGNAME"
+            storage_account_name = "SACNAME"
+            container_name       = "CONTAINER_NAME"
+            key                  = "STATE_FILE"
+        }
+  }
+
+
+# terraform version 4.x 중요 변경 사항
+
+provider block에 subscription_id 입력 필요 
+혹은 환경변수로 세팅 환경변수: ARM_SUBSCRIPTION_ID
+
+
 # module repo naming convention
 terraform-<PROVIDER>-<MODULENAME>
 
-# 모듈 문서화 툴
-https://github.com/terraform-docs/terraform-docs
-# markdown document 형식으로 정리
+# markdown document 형식으로 정리 - terraform-docs
 terraform-docs markdown document . --output-file README.md
 
 # markdown table 형식으로 정리
@@ -43,3 +69,7 @@ tolist([
   "test1",
 ])
 ```
+
+### Ref
+- [Terraform Environment Variables](https://www.terraform.io/cli/config/environment-variables)
+- [모듈 문서화 툴](https://github.com/terraform-docs/terraform-docs)
