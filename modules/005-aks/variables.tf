@@ -25,9 +25,9 @@ variable "identity_role_scope" {
 }
 
 # ACR
-variable "acr_name" {
-  type        = string
-  description = "ACR 이름"
-}
+# variable "acr_name" {
+#   type        = string
+#   description = "ACR 이름"
+# }
 
 

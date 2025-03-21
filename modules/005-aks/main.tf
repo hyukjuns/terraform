@@ -5,7 +5,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   # k8s version
   kubernetes_version        = var.k8s_version
-  automatic_channel_upgrade = "stable"
 
   # Basic
   dns_prefix = "terraform"
@@ -17,9 +16,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     node_count          = 3
     vm_size             = "Standard_D2as_v4"
     vnet_subnet_id      = var.subnet_id
-    enable_auto_scaling = true
-    max_count           = 3
-    min_count           = 1
   }
   
   # AutoScale 된 Node Count는 LifeCycle로 관리
@@ -47,20 +43,20 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 # ACR
-resource "azurerm_container_registry" "aks" {
-  name                = var.acr_name
-  resource_group_name = var.resource_group_name
-  location            = var.resource_group_location
-  sku                 = "Standard"
-  admin_enabled       = true
-}
+# resource "azurerm_container_registry" "aks" {
+#   name                = var.acr_name
+#   resource_group_name = var.resource_group_name
+#   location            = var.resource_group_location
+#   sku                 = "Standard"
+#   admin_enabled       = true
+# }
 
-resource "azurerm_role_assignment" "aks" {
-  principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
-  role_definition_name             = "AcrPull"
-  scope                            = azurerm_container_registry.aks.id
-  skip_service_principal_aad_check = true
-}
+# resource "azurerm_role_assignment" "aks" {
+#   principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+#   role_definition_name             = "AcrPull"
+#   scope                            = azurerm_container_registry.aks.id
+#   skip_service_principal_aad_check = true
+# }
 # Assign Role AKS Identity to VNET
 resource "azurerm_role_assignment" "aks_rg" {
   principal_id                     = azurerm_kubernetes_cluster.aks.identity[0].principal_id
