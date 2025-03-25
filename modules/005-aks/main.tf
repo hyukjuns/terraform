@@ -20,7 +20,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
   
   # AutoScale 된 Node Count는 LifeCycle로 관리
   lifecycle {
-    ignore_changes = [ default_node_pool[0].node_count ]
+    ignore_changes = [  
+      default_node_pool[0].upgrade_settings,
+      monitor_metrics,
+      oms_agent,
+      default_node_pool[0].node_count ]
   }
 
   # Network
