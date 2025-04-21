@@ -38,12 +38,12 @@ module "aks-01" {
   identity_role_scope     = azurerm_resource_group.example.id
 }
 
-module "aks-02" {
-  source                  = "../"
-  resource_group_name     = azurerm_resource_group.example.name
-  resource_group_location = azurerm_resource_group.example.location
-  cluster_name            = "tf-test-aks-cluster-002"
-  subnet_id               = module.network.subnet_ids["sn-aks-node-02"]
-  k8s_version             = "1.30.9"
-  identity_role_scope     = azurerm_resource_group.example.id
-}
+# module "aks-02" {
+#   source                  = "../"
+#   resource_group_name     = azurerm_resource_group.example.name
+#   resource_group_location = azurerm_resource_group.example.location
+#   cluster_name            = "tf-test-aks-cluster-002"
+#   subnet_id               = module.network.subnet_ids["sn-aks-node-02"]
+#   k8s_version             = "1.30.9"
+#   identity_role_scope     = azurerm_resource_group.example.id
+# }
