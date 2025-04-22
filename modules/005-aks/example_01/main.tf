@@ -18,11 +18,11 @@ module "network" {
     subnets = [
       {
         name             = "sn-aks-node-01"
-        address_prefixes = ["192.168.200.0/24"]
+        address_prefixes = ["192.168.0.0/22"]
       },
       {
         name             = "sn-aks-node-02"
-        address_prefixes = ["192.168.100.0/24"]
+        address_prefixes = ["192.168.4.0/22"]
       }
     ]
   }
