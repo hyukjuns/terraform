@@ -50,7 +50,7 @@ resource "azurerm_network_security_group" "backend" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "backend" {
-  subnet_id                 = azurerm_subnet.appgw.id
+  subnet_id                 = module.network.subnet_ids["dev-sn-02"]
   network_security_group_id = azurerm_network_security_group.backend.id
 }
 
@@ -79,7 +79,7 @@ resource "azurerm_network_interface" "backend" {
 
   ip_configuration {
     name                          = "${var.prefix}-linux-server-ip-config"
-    subnet_id                     = azurerm_subnet.workload.id
+    subnet_id                     = module.network.subnet_ids["dev-sn-02"]
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.backend.id
   }
