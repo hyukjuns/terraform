@@ -3,6 +3,46 @@
 ### Todo list
 - 간단한 테스트 용도 vm,network,lb 배포 모듈 개발
 - vm,db,appservice,aks,network 모듈 개발, 고도화
+- aztfexport
+
+## aztfexport
+https://github.com/Azure/aztfexport?tab=readme-ov-file
+
+### Install
+```bash
+go install github.com/Azure/aztfexport@latest
+```
+
+### Usage
+1. 내보내기 필요한 리소스들을 맵핑파일로 생성성
+
+    ```bash
+    # 쿼리 방식으로 필터링
+    aztfexport query --generate-mapping-file  --non-interactive \
+    "resourceGroup == 'rg-dev'\
+    and(type contains 'Microsoft.ContainerRegistry'\
+    or type contains 'Microsoft.ContainerService'\
+    or type contains 'Microsoft.Network'\
+    or type contains 'Microsoft.OperationalInsights/workspaces'\
+    or type contains 'Microsoft.Storage/storageAccounts')"
+
+    # 리소스그룹 대상
+    aztfexport rg --generate-mapping-file --non-interactive \
+    --backend-type=azurerm \
+    --backend-config=resource_group_name=rg-terraform \
+    --backend-config=storage_account_name=hyukjuntfstatebackend \
+    --backend-config=container_name=tfbackend-01 \
+    --backend-config=key=devaks01.tfstate rg-dev
+    ```
+2. 리소스 네이밍 변경, 불필요 리소스 제거
+
+    생성된 맵핑 파일에서 편집
+
+3. 내보내기 실행
+
+    ```bash
+    aztfexport map --append -n "aztfexportResourceMapping.json"
+    ```
 
 ### TFC Azurerm Module (Archive)
 
